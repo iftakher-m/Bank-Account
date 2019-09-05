@@ -10,15 +10,24 @@ class Account:
     
     def deposit(self, amount):
         self.balance = self.balance + amount
-
+        
     def commit(self):
         with open(self.path, 'w') as file:
             file.write(str(self.balance))
 
-account = Account("balance.txt")
-print(account.balance)
-account.withdraw(100)
-print(account.balance)
-account.deposit(200)
-print(account.balance)
-account.commit()
+class Checking(Account):
+
+    def __init__(self, filepath, fee):
+        Account.__init__(self, filepath) # 'init' method from class 'Account' is called .
+        self.fee = fee
+
+    def transfer(self, amount):
+        self.balance = self.balance - (self.fee + amount )
+
+checking = Checking("balance.txt",5)
+# checking.deposit(1200)
+# print(checking.balance)
+# checking.transfer(100)
+# print(checking.balance)
+checking.commit()
+print(checking.balance)
